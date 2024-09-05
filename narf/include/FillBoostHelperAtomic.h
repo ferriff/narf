@@ -351,12 +351,27 @@ namespace narf {
             fObject->from_boost(*fFillObject);
             fFillObject.reset();
          }
-
-
       }
 
       std::shared_ptr<HIST> GetResultPtr() const {
          return fObject;
+      }
+
+      FillBoostHelperAtomic(const std::shared_ptr<HIST> & h)
+        : fObject(h)
+	{
+         if constexpr(std::is_same_v<HIST, HISTFILL>) {
+            fFillObject = fObject;
+         }
+
+         if (ROOT::IsImplicitMTEnabled() && !HISTFILL::storage_type::has_threading_support) {
+            throw std::runtime_error("multithreading is enabled but histogram is not thread-safe, not currently supported");
+         }
+	}
+      FillBoostHelperAtomic MakeNew(void * newRes)
+      {
+                auto & res = *static_cast<std::shared_ptr<Result_t> *>(newRes);
+                return FillBoostHelperAtomic(res);
       }
 
       std::string GetActionName() { return "FillBoost"; }
@@ -365,4 +380,3 @@ namespace narf {
 }
 
 #endif
-

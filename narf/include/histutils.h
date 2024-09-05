@@ -6,6 +6,9 @@
 #include "atomic_adaptor.h"
 #include "tensorutils.h"
 #include <ROOT/RResultPtr.hxx>
+#include <ROOT/RTaskArena.hxx>
+#include <THnBase.h>
+#include <TROOT.h>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/unsupported/Eigen/CXX11/Tensor>
@@ -166,14 +169,14 @@ namespace narf {
     using value_iterator_t = std::conditional_t<std::is_const<HIST>::value,
                                             typename HIST::const_iterator,
                                             typename HIST::iterator>;
-    using interator_base_t = std::iterator<std::forward_iterator_tag,
-                                          typename value_iterator_t::value_type,
-                                          typename value_iterator_t::difference_type,
-                                          typename value_iterator_t::pointer,
-                                          typename value_iterator_t::reference>;
-
-    class iterator : public interator_base_t{
+    class iterator {
     public:
+
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = int;
+		using difference_type = int;
+		using pointer = int*;
+		using reference = int&;
 
 
       iterator(HIST &hist, std::size_t idx) : indices_(unlinearize_index(hist, idx)),
@@ -201,7 +204,7 @@ namespace narf {
 
       }
 
-      typename interator_base_t::reference operator*() const { return *iter_; }
+      typename iterator::reference operator*() const { return *iter_; }
 
       iterator& operator++() {
 
