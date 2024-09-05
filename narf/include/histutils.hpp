@@ -169,14 +169,20 @@ namespace narf {
                                             typename HIST::const_iterator,
                                             typename HIST::iterator>;
 
+    using interator_base_t = std::iterator<std::forward_iterator_tag,
+                                          typename value_iterator_t::value_type,
+                                          typename value_iterator_t::difference_type,
+                                          typename value_iterator_t::pointer,
+                                          typename value_iterator_t::reference>;
+
     class iterator {
     public:
 
       using iterator_category = std::forward_iterator_tag;
-      using value_type = value_iterator_t::value_type;
-      using difference_type = value_iterator_t::difference_type;
-      using pointer = value_iterator_t::pointer;
-      using reference = value_iterator_t::reference;
+      using value_type = typename value_iterator_t::value_type;
+      using difference_type = typename value_iterator_t::difference_type;
+      using pointer = typename value_iterator_t::pointer;
+      using reference = typename value_iterator_t::reference;
 
       iterator(HIST &hist, std::size_t idx) : indices_(unlinearize_index(hist, idx)),
         indices_begin_(HIST::multi_index_type::create(hist.rank())),
