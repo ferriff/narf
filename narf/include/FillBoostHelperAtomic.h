@@ -368,7 +368,7 @@ namespace narf {
             throw std::runtime_error("multithreading is enabled but histogram is not thread-safe, not currently supported");
          }
 	}
-      FillBoostHelperAtomic MakeNew(void * newRes)
+      FillBoostHelperAtomic MakeNew(void * newRes, std::string_view variation = "nominal")
       {
                 auto & res = *static_cast<std::shared_ptr<Result_t> *>(newRes);
                 return FillBoostHelperAtomic(res);
