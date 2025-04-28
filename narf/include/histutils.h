@@ -6,6 +6,7 @@
 #include "atomic_adaptor.h"
 #include "tensorutils.h"
 #include <ROOT/RResultPtr.hxx>
+#include <ROOT/RTaskArena.hxx>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/unsupported/Eigen/CXX11/Tensor>
